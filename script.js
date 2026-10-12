@@ -6,8 +6,9 @@
 (function () {
   'use strict';
 
-  // Local storage key
+  // Local storage keys
   const STORAGE_KEY = 'salaah_student_tasks';
+  const THEME_KEY = 'salaah_theme';
 
   // Seed tasks for first-time visitors (ABESEC student realistic examples)
   const DEFAULT_TASKS = [
@@ -61,10 +62,11 @@
   const countPendingEl = document.getElementById('countPending');
   const countCompletedEl = document.getElementById('countCompleted');
 
-  // Filter buttons
+  // Filter buttons & interactive controls
   const filterBtns = document.querySelectorAll('.filter-btn');
   const promptChips = document.querySelectorAll('.prompt-chip');
   const currentDateEl = document.getElementById('currentDate');
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
 
   // App State
   let tasks = [];
@@ -74,10 +76,61 @@
    * Initialize the application
    */
   function init() {
+    initTheme();
     initDateDisplay();
     loadTasks();
     setupEventListeners();
     render();
+  }
+
+  /**
+   * Initialize theme and color scheme preference
+   */
+  function initTheme() {
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      applyTheme(savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      applyTheme('dark');
+    } else {
+      applyTheme('light');
+    }
+
+    // Listen for OS theme changes if user hasn't chosen manually
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (e) {
+        if (!localStorage.getItem(THEME_KEY)) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    }
+  }
+
+  /**
+   * Apply theme attribute and update toggle button accessibility labels
+   */
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (themeToggleBtn) {
+      const isDark = theme === 'dark';
+      const labelText = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+      themeToggleBtn.setAttribute('aria-label', labelText);
+      themeToggleBtn.setAttribute('title', labelText);
+    }
+  }
+
+  /**
+   * Toggle between light and dark themes
+   */
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(newTheme);
+    try {
+      localStorage.setItem(THEME_KEY, newTheme);
+    } catch (e) {
+      console.warn('Could not save theme preference', e);
+    }
   }
 
   /**
@@ -155,6 +208,11 @@
         taskInput.classList.remove('input-error');
       });
     });
+
+    // Theme toggle button
+    if (themeToggleBtn) {
+      themeToggleBtn.addEventListener('click', toggleTheme);
+    }
   }
 
   /**
