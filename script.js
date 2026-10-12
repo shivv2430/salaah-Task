@@ -65,7 +65,6 @@
   // Filter buttons & interactive controls
   const filterBtns = document.querySelectorAll('.filter-btn');
   const promptChips = document.querySelectorAll('.prompt-chip');
-  const currentDateEl = document.getElementById('currentDate');
   const themeToggleBtn = document.getElementById('themeToggleBtn');
 
   // App State
@@ -77,7 +76,6 @@
    */
   function init() {
     initTheme();
-    initDateDisplay();
     loadTasks();
     setupEventListeners();
     render();
@@ -131,16 +129,6 @@
     } catch (e) {
       console.warn('Could not save theme preference', e);
     }
-  }
-
-  /**
-   * Display formatted current date
-   */
-  function initDateDisplay() {
-    if (!currentDateEl) return;
-    const now = new Date();
-    const options = { weekday: 'short', month: 'short', day: 'numeric' };
-    currentDateEl.textContent = now.toLocaleDateString('en-US', options);
   }
 
   /**
