@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salaah Task Manager · The Mentor Community at ABESEC</title>
+  <meta name="description" content="A simple, distraction-free task manager for ABESEC students to balance college work, learning goals, and mentorship preparation.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-block">
+        <div class="brand-title">
+          <span class="brand-name">Salaah</span>
+          <span class="brand-tag">ABESEC</span>
+        </div>
+        <p class="brand-subtitle">The Mentor Community</p>
+      </div>
+
+      <div class="header-meta">
+        <span class="my-tasks-badge">My Tasks</span>
+        <span class="date-display" id="currentDate">Today</span>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <!-- Welcome Hero Section -->
+      <section class="welcome-section">
+        <p class="welcome-eyebrow">Your college work, learning goals, and everything in between.</p>
+        <h1 class="welcome-heading">A little progress, every day.</h1>
+        <p class="welcome-subtext">You don't have to figure everything out at once. Just start with one task.</p>
+
+        <!-- Progress Summary -->
+        <div class="progress-card" role="region" aria-label="Task progress">
+          <div class="progress-info">
+            <span class="progress-label">Today's Progress</span>
+            <span class="progress-stats">
+              <strong id="completedCount">0</strong> of <span id="totalCount">0</span> completed
+              <span class="progress-badge" id="progressPercent">0%</span>
+            </span>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <div class="progress-bar" id="progressBar" style="width: 0%;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Add Task Section -->
+      <section class="add-task-section">
+        <form id="taskForm" class="task-form" novalidate>
+          <div class="input-group">
+            <label for="taskInput" class="visually-hidden">Task description</label>
+            <input
+              type="text"
+              id="taskInput"
+              class="task-input"
+              placeholder="What do you need to get done?"
+              autocomplete="off"
+              maxlength="160"
+            />
+            <button type="submit" id="addTaskBtn" class="btn btn-primary">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>Add Task</span>
+            </button>
+          </div>
+          <p id="formFeedback" class="form-feedback" aria-live="polite"></p>
+        </form>
+
+        <!-- Quick ABESEC Student Suggestions -->
+        <div class="quick-prompts">
+          <span class="prompts-label">Quick ideas:</span>
+          <div class="prompts-list">
+            <button type="button" class="prompt-chip" data-text="Finish Applied Mathematics assignments">Finish Applied Math</button>
+            <button type="button" class="prompt-chip" data-text="Practice 2 DSA questions">Practice 2 DSA questions</button>
+            <button type="button" class="prompt-chip" data-text="Update my portfolio">Update my portfolio</button>
+            <button type="button" class="prompt-chip" data-text="Research an internship">Research internship</button>
+            <button type="button" class="prompt-chip" data-text="Prepare questions before talking to a senior">Talk to a senior</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Task Controls & Filters -->
+      <section class="tasks-container">
+        <div class="filter-bar" role="tablist" aria-label="Task filters">
+          <button
+            type="button"
+            class="filter-btn active"
+            id="filterAll"
+            data-filter="all"
+            role="tab"
+            aria-selected="true"
+          >
+            All <span class="filter-count" id="countAll">0</span>
+          </button>
+          <button
+            type="button"
+            class="filter-btn"
+            id="filterPending"
+            data-filter="pending"
+            role="tab"
+            aria-selected="false"
+          >
+            Pending <span class="filter-count" id="countPending">0</span>
+          </button>
+          <button
+            type="button"
+            class="filter-btn"
+            id="filterCompleted"
+            data-filter="completed"
+            role="tab"
+            aria-selected="false"
+          >
+            Completed <span class="filter-count" id="countCompleted">0</span>
+          </button>
+        </div>
+
+        <!-- Task List -->
+        <div class="task-list-wrapper">
+          <ul id="taskList" class="task-list" aria-label="Tasks list">
+            <!-- Rendered dynamically by script.js -->
+          </ul>
+
+          <!-- Empty State -->
+          <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon-circle">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 20h9"/>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+              </svg>
+            </div>
+            <h3 class="empty-title" id="emptyTitle">Nothing here for now. Add a task and get started.</h3>
+            <p class="empty-desc" id="emptyDesc">Break your college work into smaller goals and tackle them one step at a time.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p class="footer-note">
+          <strong>Salaah</strong> · The Mentor Community at ABESEC, Ghaziabad
+        </p>
+        <p class="footer-sub">Built for peers by peers. Saved locally in your browser.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
